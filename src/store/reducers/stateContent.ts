@@ -1,20 +1,15 @@
 import * as Actions from '../actions';
 const initialState = {
-    userInfo:{},
-    newsData:[]
+    selectedNumbers:[],
 };
-export default function stateContent(state = initialState, action = {payload:{},type:''}) {
+export default function stateContent(state = initialState, action = {payload:[],type:''}) {
     switch (action.type) {
-        case Actions.userInfo:
+        case Actions.UPDATE_NUMBER:
             return {
                 ...state,
-                userInfo:{...action.payload}
+                selectedNumbers:[...action.payload]
             }
-        case Actions.newsData:
-            return{
-                ...state,
-                newsData:[...state.newsData,action.payload]
-            }
+        
     }
     
     return state

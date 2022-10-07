@@ -1,2 +1,1 @@
-export const userInfo = "USER_INFO";
-export const newsData = "NEWS_DATA";
+export const UPDATE_NUMBER = "UPDATE_NUMBER";

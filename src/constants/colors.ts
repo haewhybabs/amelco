@@ -1,7 +1,8 @@
-export const textColor = "#999999";
+export const textColor = "#6B6B6B";
 export const white = '#FFFFFF';
 export const black ='#000000';
 export const lightBlue='#2F80ED';
+export const lightGrey = '#F2F2F2';
 export const lightBrown= '#5B5B5B';
 export const lineColor='#ECECEC';
 export const cardColor ='#F6F7FC';
