@@ -16,9 +16,9 @@
 * Important data were stored in the constant such as length of the selected number
 
 ## Operations
-* A grid consisting 80 numbers
+* A grid consisting of 80 numbers
 * User can select up to 5
-* User can remove from the selected one by clicking on the selected from the grid
+* User can remove from the selected ones by clicking on the selected number to be removed from the grid
 * Validations were implemented to check if they are inline with the expectations
 * Suggesting stake amount feature
 * Lucky pick button that randomly picks 5 numbers for the user
