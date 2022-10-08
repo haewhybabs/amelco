@@ -10,7 +10,6 @@ const Divider = ({style}:DivdierProps) => (
     height: 0.5,
     opacity: 1,
     backgroundColor: textColor,
-    width:width,
     marginVertical:25,...style
   }}/>
 );

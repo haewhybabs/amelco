@@ -117,6 +117,6 @@ export const styles = StyleSheet.create({
         alignItems:'center'
     },
     bottomSpace:{
-        marginBottom:200
+        marginBottom:100
     }
 })
