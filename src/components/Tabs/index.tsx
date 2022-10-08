@@ -8,7 +8,7 @@ interface HeaderProps {
     setIndexValue?:any
 
 }
-export default function HeaderSelector({
+export default function Tabs({
     indexHeader,
     indexValue,
     setIndexValue

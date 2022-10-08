@@ -28,7 +28,6 @@ export default function Header({
 const styles = StyleSheet.create({
     wrapper:{
         backgroundColor:white,
-        padding:20,
     },
     container:{
         flexDirection:'row',

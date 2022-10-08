@@ -3,12 +3,14 @@ import React,{useState} from 'react'
 import Header from '../../components/Header'
 import { styles } from './styles'
 import Texts from '../../components/Texts'
-import { range } from '../../constants/functions'
 import SimpleToast from 'react-native-simple-toast'
 import {useDispatch, useSelector,RootStateOrAny} from 'react-redux';
 import * as Actions from '../../store/actions';
-import HeaderSelector from '../../components/HeaderSelector'
-import SelectContent from '../../components/HeaderSelector/SelectContent'
+import HeaderSelector from '../../components/Tabs'
+import SelectContent from '../../components/Tabs/SelectContent'
+import { numberRange } from '../../constants/string'
+import Divider from '../../components/Divider'
+import RowContent from '../../components/Tabs/RowContent'
 export default function Home() {
     const [indexValue,setIndexValue]=useState(1)
     const dispatch = useDispatch();
@@ -25,10 +27,6 @@ export default function Home() {
             name:'41-80'
         }
     ]
-    const numberRange={
-        range1:range(1,40,1),
-        range2:range(41,80,1)
-    }
     const handleClickNumber=(no:number)=>{
         if(checkNumberExist(no)){
             removeNumber(no)
@@ -52,11 +50,19 @@ export default function Home() {
         let currentNumbers = selectedNumbers.filter((item:any)=>item!=no)
         dispatch({type:Actions.UPDATE_NUMBER,payload:currentNumbers})
     }
+    const handleLuckyPick = () =>{
+        var arr = [];
+        while(arr.length < 5){
+            var r = Math.floor(Math.random() * 80) + 1;
+            if(arr.indexOf(r) === -1) arr.push(r);
+        }
+        dispatch({type:Actions.UPDATE_NUMBER,payload:arr})
+    }
 
   return (
     <SafeAreaView style={styles.container}>
         <Header title = "KENO"/>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
             <View style={styles.contentMargin}>
                 <View style={styles.contentWrapper}>
                     <Texts style={styles.subText}>Select 5 numbers from 1 to 80</Texts>
@@ -74,7 +80,26 @@ export default function Home() {
                     checkNumberExist={checkNumberExist}
                     />
                 </View>
+                <View style={styles.breakLine}/>
+                <View style={styles.rowSelection}>
+                    <Texts style={{...styles.subHeaderText,...styles.marginAlign}}>Raffle Details</Texts>
+                    <Pressable style={styles.buttonWrapper} onPress={handleLuckyPick}>
+                        <Texts style={styles.buttonText}>Lucky Pick</Texts>
+                    </Pressable>
+                </View>
+                <Divider />
+                <View style={styles.pickedWrapper}>
+                    {selectedNumbers.map((item:number,index:number)=>(
+                        <RowContent
+                        checkNumberExist={true}
+                        item={item}
+                        key={index}
+                        handleClickNumber={()=>{}}
+                        />
+                    ))}
+                </View>
             </View>
+            <View style={{marginBottom:200}}/>
         </ScrollView>
     </SafeAreaView>
   )

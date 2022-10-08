@@ -2,6 +2,7 @@ import { View, Text,Pressable } from 'react-native'
 import React from 'react'
 import Texts from '../Texts'
 import {styles} from './styles'
+import RowContent from './RowContent'
 interface HeaderProps {
     indexValue?:number,
     numberRange?:any
@@ -25,9 +26,12 @@ export default function SelectContent({
                     <>
                         {
                             numberRange.range1.map((item:any,index:number)=>(
-                                <Pressable style={checkNumberExist(item)?styles.numberItem2:styles.numberItem} key={index} onPress={()=>handleClickNumber(item)}>
-                                    <Texts style={styles.numberText}>{item}</Texts>
-                                </Pressable>
+                                <RowContent 
+                                checkNumberExist={checkNumberExist(item)}
+                                item={item}
+                                handleClickNumber={handleClickNumber}
+                                key={index}
+                                />
                             ))
                         }
                     </>
@@ -38,9 +42,12 @@ export default function SelectContent({
                     <>
                         {
                             numberRange.range2.map((item:any,index:number)=>(
-                                <Pressable style={checkNumberExist(item)?styles.numberItem2:styles.numberItem} key={index}  onPress={()=>handleClickNumber(item)}>
-                                    <Texts style={styles.numberText}>{item}</Texts>
-                                </Pressable>
+                                <RowContent 
+                                checkNumberExist={checkNumberExist(item)}
+                                item={item}
+                                handleClickNumber={handleClickNumber}
+                                key={index}
+                                />
                             ))
                         }
                     </>

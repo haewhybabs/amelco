@@ -3,18 +3,6 @@ import { black, green, lightGrey, textColor, white } from "../../constants/color
 import { width } from "../../constants/dimension";
 const numberWidth = (width/5)-30
 export const styles = StyleSheet.create({
-    container:{
-        flex:1,
-        backgroundColor:white,
-        padding:20,
-        paddingTop:0,
-    },
-    contentWrapper:{
-        backgroundColor:lightGrey,
-        width:'100%',
-        padding:20,
-        // margin:20
-    },
     subText:{
         color:textColor,
         fontSize:13,
