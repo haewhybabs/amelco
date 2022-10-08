@@ -5,7 +5,7 @@ import { white } from '../../constants/colors';
 interface SplashProps{
     route?:any
     navigation?:any
-  }
+}
 export default function Splash({navigation,route}:SplashProps) {
     React.useEffect(()=>{
         setTimeout(() => {

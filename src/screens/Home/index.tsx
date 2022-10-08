@@ -14,7 +14,11 @@ import RowContent from '../../components/Tabs/RowContent'
 import UserInput from '../../components/UserInput'
 import Button from '../../components/Button'
 import numeral from 'numeral';
-export default function Home() {
+import { Root, Popup } from 'react-native-popup-confirm-toast'
+interface HomeProps{
+    navigation?:any
+}
+export default function Home({navigation}:HomeProps) {
     const [indexValue,setIndexValue]=useState(1)
     const [moneyInput,setMoneyInput]=useState('');
     const [moneyShow,setMoneyShow]=useState('')
@@ -69,6 +73,26 @@ export default function Home() {
             SimpleToast.show('Please select 5 numbers!')
             return;
         }
+        if(!moneyInput){
+            SimpleToast.show('Please input your stake amount')
+            return;
+        }
+        
+        Popup.show({
+            type: 'success',
+            title: 'Bet placed successfully',
+            textBody: 'Thank you for using our service. ',
+            buttonText: 'Go Again',
+            callback: () => {
+                dispatch({
+                    type:Actions.UPDATE_NUMBER,payload:[]
+                })
+                setMoneyInput('')
+                setMoneyShow('')
+                Popup.hide()
+            }
+        })
+        
     }
     const handleMoneyInput = (value:any) => {
         setMoneyInput(value)
@@ -78,81 +102,83 @@ export default function Home() {
     };
 
   return (
-    <SafeAreaView style={styles.container}>
-        <Header title = "KENO"/>
-        <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={styles.contentMargin}>
-                <View style={styles.contentWrapper}>
-                    <Texts style={styles.subText}>Select 5 numbers from 1 to 80</Texts>
-                    <HeaderSelector
-                    indexHeader={indexHeader}
-                    indexValue={indexValue}
-                    setIndexValue={setIndexValue}
-                    />
-                    <SelectContent 
-                    indexValue={indexValue}
-                    indexHeader = {indexHeader}
-                    numberRange={numberRange}
-                    selectedNumbers={selectedNumbers}
-                    handleClickNumber={handleClickNumber}
-                    checkNumberExist={checkNumberExist}
-                    />
-                </View>
-                <View style={styles.breakLine}/>
-                <View style={styles.rowSelection}>
-                    <Texts style={{...styles.subHeaderText,...styles.marginAlign}}>Raffle Details</Texts>
-                    <Button 
-                    onPress={handleLuckyPick}
-                    title="Lucky Pick"
-                    />
-                </View>
-                <Divider />
-                <View style={styles.pickedWrapper}>
-                    {selectedNumbers.map((item:number,index:number)=>(
-                        <RowContent
-                        checkNumberExist={true}
-                        item={item}
-                        key={index}
-                        handleClickNumber={()=>{}}
+    <Root>
+        <SafeAreaView style={styles.container}>
+            <Header title = "KENO"/>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={styles.contentMargin}>
+                    <View style={styles.contentWrapper}>
+                        <Texts style={styles.subText}>Select 5 numbers from 1 to 80</Texts>
+                        <HeaderSelector
+                        indexHeader={indexHeader}
+                        indexValue={indexValue}
+                        setIndexValue={setIndexValue}
                         />
-                    ))}
+                        <SelectContent 
+                        indexValue={indexValue}
+                        indexHeader = {indexHeader}
+                        numberRange={numberRange}
+                        selectedNumbers={selectedNumbers}
+                        handleClickNumber={handleClickNumber}
+                        checkNumberExist={checkNumberExist}
+                        />
+                    </View>
+                    <View style={styles.breakLine}/>
+                    <View style={styles.rowSelection}>
+                        <Texts style={{...styles.subHeaderText,...styles.marginAlign}}>Raffle Details</Texts>
+                        <Button 
+                        onPress={handleLuckyPick}
+                        title="Lucky Pick"
+                        />
+                    </View>
+                    <Divider />
+                    <View style={styles.pickedWrapper}>
+                        {selectedNumbers.map((item:number,index:number)=>(
+                            <RowContent
+                            checkNumberExist={true}
+                            item={item}
+                            key={index}
+                            handleClickNumber={()=>{}}
+                            />
+                        ))}
+                    </View>
+                    <View style={styles.rowDirection}>
+                        <UserInput 
+                        onChangeText={(val?:any)=>handleMoneyInput(val)}
+                        value={moneyShow}
+                        placeholder={'Stake Amount'}
+                        style={styles.inputStyle}
+                        keyboardType="numeric"
+                        />
+                        <Button 
+                        title="Place Bet"
+                        style={styles.stakeButton}
+                        disabled={disabled}
+                        onPress={()=>handleStake()}
+                        />
+                    </View>
                 </View>
-                <View style={styles.rowDirection}>
-                    <UserInput 
-                    onChangeText={(val?:any)=>handleMoneyInput(val)}
-                    value={moneyShow}
-                    placeholder={'Stake Amount'}
-                    style={styles.inputStyle}
-                    keyboardType="numeric"
-                    />
-                    <Button 
-                    title="Stake"
-                    style={styles.stakeButton}
-                    disabled={disabled}
-                    onPress={()=>handleStake()}
-                    />
-                </View>
-            </View>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-                {
-                    suggestedAmount.map((item,index)=>(
-                        <TouchableOpacity 
-                        style={moneyInput===item.value?styles.boxWrapper2:styles.boxWrapper} 
-                        key={index}
-                        onPress={()=>
-                            {
-                                handleMoneyInput(item.value)
-                                
-                            }}
-                        >
-                            <Texts style={moneyInput===item.value?styles.numberText:null}>₦{item.value}</Texts>
-                        </TouchableOpacity>
-                    ))
-                }
-                
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                    {
+                        suggestedAmount.map((item,index)=>(
+                            <TouchableOpacity 
+                            style={moneyInput===item.value?styles.boxWrapper2:styles.boxWrapper} 
+                            key={index}
+                            onPress={()=>
+                                {
+                                    handleMoneyInput(item.value)
+                                    
+                                }}
+                            >
+                                <Texts style={moneyInput===item.value?styles.numberText:null}>₦{item.value}</Texts>
+                            </TouchableOpacity>
+                        ))
+                    }
+                    
+                </ScrollView>
+                <View style={styles.bottomSpace}/>
             </ScrollView>
-            <View style={styles.bottomSpace}/>
-        </ScrollView>
-    </SafeAreaView>
+        </SafeAreaView>
+    </Root>
   )
 }
