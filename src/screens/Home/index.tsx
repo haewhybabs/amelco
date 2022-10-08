@@ -1,4 +1,4 @@
-import { View,SafeAreaView, Pressable, ScrollView } from 'react-native'
+import { View,SafeAreaView, Pressable, ScrollView, TouchableOpacity } from 'react-native'
 import React,{useState} from 'react'
 import Header from '../../components/Header'
 import { styles } from './styles'
@@ -8,15 +8,21 @@ import {useDispatch, useSelector,RootStateOrAny} from 'react-redux';
 import * as Actions from '../../store/actions';
 import HeaderSelector from '../../components/Tabs'
 import SelectContent from '../../components/Tabs/SelectContent'
-import { numberRange } from '../../constants/string'
+import { defaultLength, numberRange, suggestedAmount } from '../../constants/string'
 import Divider from '../../components/Divider'
 import RowContent from '../../components/Tabs/RowContent'
+import UserInput from '../../components/UserInput'
+import Button from '../../components/Button'
+import numeral from 'numeral';
 export default function Home() {
     const [indexValue,setIndexValue]=useState(1)
+    const [moneyInput,setMoneyInput]=useState('');
+    const [moneyShow,setMoneyShow]=useState('')
     const dispatch = useDispatch();
     let selectedNumbers = useSelector((state: RootStateOrAny) => {
         return state.stateContent.selectedNumbers;
     });
+    const disabled =selectedNumbers.length>4?false:true
     const indexHeader = [
         {
             id:1,
@@ -33,7 +39,7 @@ export default function Home() {
             return
         }
         let currentNumbers :any= [...selectedNumbers]
-        if(currentNumbers.length>=5){
+        if(currentNumbers.length>=defaultLength){
             SimpleToast.show('You have already selected 5 numbers!')
             return;
         }
@@ -52,12 +58,24 @@ export default function Home() {
     }
     const handleLuckyPick = () =>{
         var arr = [];
-        while(arr.length < 5){
-            var r = Math.floor(Math.random() * 80) + 1;
-            if(arr.indexOf(r) === -1) arr.push(r);
+        while(arr.length < defaultLength){
+            var random = Math.floor(Math.random() * 80) + 1;
+            if(arr.indexOf(random) === -1) arr.push(random);
         }
         dispatch({type:Actions.UPDATE_NUMBER,payload:arr})
     }
+    const handleStake = () =>{
+        if(disabled){
+            SimpleToast.show('Please select 5 numbers!')
+            return;
+        }
+    }
+    const handleMoneyInput = (value:any) => {
+        setMoneyInput(value)
+        let amount = numeral(value).format('0,0[.]00');
+        setMoneyShow(amount)
+       
+    };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -83,9 +101,10 @@ export default function Home() {
                 <View style={styles.breakLine}/>
                 <View style={styles.rowSelection}>
                     <Texts style={{...styles.subHeaderText,...styles.marginAlign}}>Raffle Details</Texts>
-                    <Pressable style={styles.buttonWrapper} onPress={handleLuckyPick}>
-                        <Texts style={styles.buttonText}>Lucky Pick</Texts>
-                    </Pressable>
+                    <Button 
+                    onPress={handleLuckyPick}
+                    title="Lucky Pick"
+                    />
                 </View>
                 <Divider />
                 <View style={styles.pickedWrapper}>
@@ -98,8 +117,41 @@ export default function Home() {
                         />
                     ))}
                 </View>
+                <View style={styles.rowDirection}>
+                    <UserInput 
+                    onChangeText={(val?:any)=>handleMoneyInput(val)}
+                    value={moneyShow}
+                    placeholder={'Stake Amount'}
+                    style={styles.inputStyle}
+                    keyboardType="numeric"
+                    />
+                    <Button 
+                    title="Stake"
+                    style={styles.stakeButton}
+                    disabled={disabled}
+                    onPress={()=>handleStake()}
+                    />
+                </View>
             </View>
-            <View style={{marginBottom:200}}/>
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                {
+                    suggestedAmount.map((item,index)=>(
+                        <TouchableOpacity 
+                        style={moneyInput===item.value?styles.boxWrapper2:styles.boxWrapper} 
+                        key={index}
+                        onPress={()=>
+                            {
+                                handleMoneyInput(item.value)
+                                
+                            }}
+                        >
+                            <Texts style={moneyInput===item.value?styles.numberText:null}>₦{item.value}</Texts>
+                        </TouchableOpacity>
+                    ))
+                }
+                
+            </ScrollView>
+            <View style={styles.bottomSpace}/>
         </ScrollView>
     </SafeAreaView>
   )
