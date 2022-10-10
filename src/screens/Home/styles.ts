@@ -96,7 +96,8 @@ export const styles = StyleSheet.create({
         borderWidth:0.5,
         height:55,
         borderColor:lightGrey2,
-        borderRadius:7
+        borderRadius:7,
+        color:black
     },
     boxWrapper:{
         height:40,

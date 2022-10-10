@@ -1,5 +1,6 @@
 import { View,TextInput,StyleSheet } from 'react-native'
 import React from 'react'
+import { black } from '../../constants/colors'
 interface InputProps{
     style?:any
     onChangeText?:any,
@@ -34,5 +35,6 @@ const styles = StyleSheet.create({
         backgroundColor:'#F7F7FC',
         paddingLeft:10,
         fontSize:16,
+        color:black
     },
 })
